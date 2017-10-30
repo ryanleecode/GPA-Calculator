@@ -1,0 +1,22 @@
+{
+	"env": {
+        "browser": true,
+		"node": true,
+        "es6": true
+	},
+	"rules": {
+		"no-console": 0,
+		"no-cond-assign": 0,
+		"no-unused-vars": 1,
+        "no-extra-semi": "warn",
+        "no-empty": "warn",
+		"semi": "warn"
+    },
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "chrome": false
+    }
+}

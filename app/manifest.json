@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+
+    "name": "YorkU GPA calculator",
+    "description": "This extension allows you to easily calculate your gpa",
+    "version": "1.0",
+
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://wrem.sis.yorku.ca/Apps/WebObjects/ydml.woa/wa/DirectAction/document?name=CourseListv1",
+                        "https://wrem.sis.yorku.ca/Apps/WebObjects/ydml.woa/wa/DirectAction/document?name=GradeReportv1",
+                        "https://wrem.sis.yorku.ca/Apps/WebObjects/ydml.woa/wa/DirectAction/document?name=GradeRpSummerv1"],
+            "js": ["src/contentScript.js"]
+        }
+    ],
+
+    "permissions": [
+        "activeTab",
+        "storage",
+        "tabs",
+        "webNavigation"
+    ]
+
+}
