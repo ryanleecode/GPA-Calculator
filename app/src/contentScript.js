@@ -1,8 +1,8 @@
-chrome.runtime.onConnect.addListener(function(incPort) {
-    if (incPort.name !== 'app') {
+chrome.runtime.onConnect.addListener(function (incPort) {
+    if (incPort.name !== "app") {
         return;
     }
-    incPort.onMessage.addListener(function(msg) {
+    incPort.onMessage.addListener(function (msg) {
         if (msg === "Get GPA") {
             sendGPA();
         }
@@ -20,12 +20,19 @@ chrome.runtime.onConnect.addListener(function(incPort) {
 // Get the table that contains the user's grades
 // This is hard coded based on the format of the YorkU grades page
 function getGradesTable() {
-    const tableBodies = document.getElementsByTagName('tbody');
+    const tableBodies = document.getElementsByTagName("tbody");
     for (let i = 0; i < tableBodies.length; i++) {
         const tBodyRows = tableBodies[i].children;
-        if (tBodyRows.length >= 2 && tBodyRows.hasOwnProperty("0") && tBodyRows.hasOwnProperty("1")) {
-            if ((tBodyRows["0"].innerText === "Enrolled Courses" && tBodyRows["1"].innerText === "Session	Course	Title	Grade"
-                || tBodyRows["0"].innerText === "Session	Course	Title	Grade")) {
+        if (
+            tBodyRows.length >= 2 &&
+            tBodyRows.hasOwnProperty("0") &&
+            tBodyRows.hasOwnProperty("1")
+        ) {
+            if (
+                (tBodyRows["0"].innerText === "Enrolled Courses" &&
+                    tBodyRows["1"].innerText === "Session	Course	Title	Grade") ||
+                tBodyRows["0"].innerText === "Session	Course	Title	Grade"
+            ) {
                 return tableBodies[i];
             }
         }
@@ -37,7 +44,10 @@ function getGPA() {
     let counter = 0.0;
     const gradesRows = getGradesTable().children;
     for (const prop in gradesRows) {
-        if (!gradesRows.hasOwnProperty(prop) || gradesRows[prop].children.length !== 4) {
+        if (
+            !gradesRows.hasOwnProperty(prop) ||
+            gradesRows[prop].children.length !== 4
+        ) {
             continue;
         }
         const tableData = gradesRows[prop].children;
@@ -53,16 +63,15 @@ function getGPA() {
 }
 
 function sendGPA() {
-    const port = chrome.runtime.connect({ name : 'contentScript' });
-    port.postMessage({GPA: getGPA()});
+    const port = chrome.runtime.connect({ name: "contentScript" });
+    port.postMessage({ GPA: getGPA() });
 }
 
 function addRow(rowData) {
     const gradesTable = getGradesTable();
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
     for (let i = 0; i < rowData.length; i++) {
-        console.log("derp");
-        const td = document.createElement('td');
+        const td = document.createElement("td");
         const textNode = document.createTextNode(rowData[i]);
         td.appendChild(textNode);
         row.appendChild(td);
@@ -77,14 +86,14 @@ function popRow() {
 
 const YorKUGradeScale = {
     "A+": 9,
-    "A": 8,
+    A: 8,
     "B+": 7,
-    "B": 6,
+    B: 6,
     "C+": 5,
-    "C": 4,
+    C: 4,
     "D+": 3,
-    "D": 2,
-    "E": 1,
-    "F": 0,
+    D: 2,
+    E: 1,
+    F: 0,
     "F NGR": 0,
 };
